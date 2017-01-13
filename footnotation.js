@@ -1,19 +1,19 @@
-function fdfootnote_show(pid) {
-	jQuery('#footnotes-'+pid+' ol').show();
-	fdfootnote_updatelabel(pid);
+function footnotation_show(pid) {
+	jQuery('#footnote-'+pid+' ol').show();
+	footnotation_updatelabel(pid);
 }
 
-function fdfootnote_togglevisible(pid) {
-	jQuery('#footnotes-'+pid+' ol').toggle();
-	fdfootnote_updatelabel(pid);
+function footnotation_togglevisible(pid) {
+	jQuery('#footnote-'+pid+' ol').toggle();
+	footnotation_updatelabel(pid);
 	return false;
 }
 
-function fdfootnote_updatelabel(pid) {
-	if (jQuery('#footnotes-'+pid+' ol').is(':visible')) {
-		jQuery('#footnotes-'+pid+' .footnoteshow').hide();
+function footnotation_updatelabel(pid) {
+	if (jQuery('#footnote-'+pid+' ol').is(':visible')) {
+		jQuery('#footnote-'+pid+' .footnoteshow').hide();
 	} else {
-		jQuery('#footnotes-'+pid+' .footnoteshow').show();
+		jQuery('#footnote-'+pid+' .footnoteshow').show();
 	}
 }
 
@@ -25,7 +25,7 @@ jQuery(document).ready(
 				var pieces = target.split('-');
 				if (pieces.length == 3) {
 					var pid = pieces[1];
-					fdfootnote_show(pid);
+					footnotation_show(pid);
 				}
 			}
 		} catch (ex) {
