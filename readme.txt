@@ -1,4 +1,4 @@
-=== Footnotations ===
+=== Footnotation ===
 Contributors: vhbelvadi
 Donate link: http://vhbelvadi.com/footnotation/
 Tags: essay, academic, footnotes, endnotes, post, writing, editing
