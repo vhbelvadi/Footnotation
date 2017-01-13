@@ -55,8 +55,8 @@ function footnotation_config_page() {
 	global $wpdb;
 	if ( function_exists('add_submenu_page') )
 		add_submenu_page('options-general.php',
-			__('Footnotes', footnotation_localisation),
-			__('Footnotes', footnotation_localisation),
+			__('Footnotation', footnotation_localisation),
+			__('Footnotation', footnotation_localisation),
 			'manage_options', __FILE__, 'footnotation_conf');
 }
 
@@ -80,6 +80,12 @@ function footnotation_conf() {
 		} else {
 			$options['footnotation_single'] = 0;
 		}
+		
+		if (isset($_POST['footnotation_colour'])) {
+			$options['footnotation_colour'] = 1;
+		} else {
+			$options['footnotation_colour'] = 0;
+		}
 
 		update_option('footnotation', $options);
 
@@ -94,17 +100,31 @@ function footnotation_conf() {
 		echo "</p></div>";
 	}
 	?>
-	<h2><?php _e('Footnotes Configuration', footnotation_localisation); ?></h2>
+	<h2><?php _e('Footnotation options', footnotation_localisation); ?></h2>
 	<form action="" method="post" id="footnotation-conf">
-	
+	<br/>
 	<p>
 		<input id="footnotation_single" name="footnotation_single" type="checkbox" value="1"<?php if ($options['footnotation_single']==1) echo ' checked'; ?> />
-		<label for="footnotation_single"><?php _e('Only show footnotes on single post/page', footnotation_localisation); ?></label>
+		<label for="footnotation_single"><?php _e('Show footnotes only on single posts or pages', footnotation_localisation); ?></label>
 	</p>
 
 	<p>
 		<input id="footnotation_collapse" name="footnotation_collapse" type="checkbox" value="1"<?php if ($options['footnotation_collapse']==1) echo ' checked'; ?> />
-		<label for="footnotation_collapse"><?php _e('Collapse footnotes until clicked', footnotation_localisation); ?></label>
+		<label for="footnotation_collapse"><?php _e('Collapse footnotes until they are clicked on', footnotation_localisation); ?></label>
+	</p>
+
+	<p>
+		<input id="footnotation_colour" name="footnotation_colour" type="checkbox" value="1"<?php if ($options['footnotation_colour']==1) echo ' checked'; ?> />
+		<label for="footnotation_colour"><?php _e('Match footnote marker colour to surrounding text*', footnotation_localisation); ?></label>
+	</p>
+	
+	<p>
+	<small>
+	<br/>
+	<hr/>
+	* Leave unchecked to use your theme’s default link colour.<br/>
+	<strong>NB</strong> If you are using a caching plugin, you may need to clear your cache for these options to take effect immediately.
+	</small>
 	</p>
 
 	<p class="submit" style="text-align: left"><?php wp_nonce_field('footnotation', 'footnotation-admin'); ?><input type="submit" name="submit" value="<?php _e('Save', footnotation_localisation); ?> &raquo;" /></p>
@@ -118,9 +138,11 @@ function footnotation_convert($content) {
 	$options = get_option('footnotation');
 	$collapse = 0;
 	$single = 0;
+	$colour = 0;
 	$linksingle = false;
 	if (isset($options['footnotation_collapse'])) $collapse = $options['footnotation_collapse'];
 	if (isset($options['footnotation_single'])) $single = $options['footnotation_single'];
+	if (isset($options['footnotation_colour'])) $single = $options['footnotation_colour'];
 	if (!is_page() && !is_single() && $single) $linksingle = true;
 	
 	$post_id = get_the_ID();
@@ -135,8 +157,18 @@ function footnotation_convert($content) {
 			$singleurl = '';
 			if ($linksingle) $singleurl = get_permalink();
 			
+			if ($options['footnotation_colour']) {
+			
+			$content = str_replace($marker, "<sup class='footnote footnoteblack'><a href='$singleurl#marker-$post_id-$n' id='markerref-$post_id-$n' onclick='return footnotation_show($post_id)'>$n</a></sup>", $content);
+			$n++;
+			
+			}
+			else
+			{
+			
 			$content = str_replace($marker, "<sup class='footnote'><a href='$singleurl#marker-$post_id-$n' id='markerref-$post_id-$n' onclick='return footnotation_show($post_id)'>$n</a></sup>", $content);
 			$n++;
+			}
 		}
 
 		// *****************************************************************************************************
