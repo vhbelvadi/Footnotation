@@ -1,15 +1,15 @@
 <?php
 /*
-Plugin Name: FD Footnotes
-Plugin URI: http://flagrantdisregard.com/footnotes-plugin
-Description: Elegant and easy to use footnotes
-Author: John Watson
-Version: 1.36
-Author URI: http://flagrantdisregard.com
+Plugin Name: Footnotation
+Plugin URI: http://vhbelvadi.com/footnotation
+Description: A simple footnote plugin for Wordpress
+Author: V.H. Belvadi
+Version: 1.0
+Author URI: http://vhbelvadi.com
 
-Copyright (C) 2008 John Watson
-john@flagrantdisregard.com
-http://flagrantdisregard.com/footnotes-plugin
+Copyright (C) 2008 V.H. Belvadi
+hello@vhbelvadi.com
+http://vhbelvadi.com/footnotation
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,60 +21,67 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+To receive a copy of the GNU General Public License
+please write to the Free Software Foundation, Inc.,
+59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
-define('FDFOOTNOTE_TEXTDOMAIN', 'fdfootnote');
+/*
+define('footnotation_localisation', 'footnotation');
 
 if (function_exists('load_plugin_textdomain')) {
-	load_plugin_textdomain(FDFOOTNOTE_TEXTDOMAIN, false, dirname(plugin_basename(__FILE__)).'/languages' );
+	load_plugin_textdomain(footnotation_localisation, false, dirname(plugin_basename(__FILE__)).'/lang' );
+}
+*/
+
+add_action('admin_menu', 'footnotation_config_page');
+add_action('wp_enqueue_scripts', 'footnotation_enqueue_scripts');
+add_action( 'wp_enqueue_scripts', 'footnotation_enqueue_styles' );
+
+function footnotation_enqueue_styles() {
+    wp_enqueue_style( 'footnotation-styles', get_bloginfo('wpurl').'/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)). '/footnotation-styles.css' );
 }
 
-add_action('admin_menu', 'fdfootnote_config_page');
-add_action('wp_enqueue_scripts', 'fdfootnote_enqueue_scripts');
-
-function fdfootnote_enqueue_scripts() {
+function footnotation_enqueue_scripts() {
 	if (is_admin()) return;
 	
 	wp_enqueue_script('jquery');
 	
-	wp_register_script('fdfootnote_script', get_bloginfo('wpurl').'/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/fdfootnotes.js', array('jquery'), '1.34');
-	wp_enqueue_script('fdfootnote_script');
+	wp_register_script('footnotation_script', get_bloginfo('wpurl').'/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/footnotation.js', array('jquery'), '1.34');
+	wp_enqueue_script('footnotation_script');
 }
 
-function fdfootnote_config_page() {
+function footnotation_config_page() {
 	global $wpdb;
 	if ( function_exists('add_submenu_page') )
 		add_submenu_page('options-general.php',
-			__('Footnotes', FDFOOTNOTE_TEXTDOMAIN),
-			__('Footnotes', FDFOOTNOTE_TEXTDOMAIN),
-			'manage_options', __FILE__, 'fdfootnote_conf');
+			__('Footnotes', footnotation_localisation),
+			__('Footnotes', footnotation_localisation),
+			'manage_options', __FILE__, 'footnotation_conf');
 }
 
-function fdfootnote_conf() {
-	$options = get_option('fdfootnote');
+function footnotation_conf() {
+	$options = get_option('footnotation');
 
-	if (!isset($options['fdfootnote_collapse'])) $options['fdfootnote_collapse'] = 0;
+	if (!isset($options['footnotation_collapse'])) $options['footnotation_collapse'] = 0;
 	
 	$updated = false;
 	if ( isset($_POST['submit']) ) {
-		check_admin_referer('fdfootnote', 'fdfootnote-admin');
+		check_admin_referer('footnotation', 'footnotation-admin');
 		
-		if (isset($_POST['fdfootnote_collapse'])) {
-			$options['fdfootnote_collapse'] = 1;
+		if (isset($_POST['footnotation_collapse'])) {
+			$options['footnotation_collapse'] = 1;
 		} else {
-			$options['fdfootnote_collapse'] = 0;
+			$options['footnotation_collapse'] = 0;
 		}
 
-		if (isset($_POST['fdfootnote_single'])) {
-			$options['fdfootnote_single'] = 1;
+		if (isset($_POST['footnotation_single'])) {
+			$options['footnotation_single'] = 1;
 		} else {
-			$options['fdfootnote_single'] = 0;
+			$options['footnotation_single'] = 0;
 		}
 
-		update_option('fdfootnote', $options);
+		update_option('footnotation', $options);
 
 		$updated = true;
 	}
@@ -83,37 +90,37 @@ function fdfootnote_conf() {
 	<?php
 	if ($updated) {
 		echo "<div id='message' class='updated fade'><p>";
-		_e('Configuration updated.', FDFOOTNOTE_TEXTDOMAIN);
+		_e('Configuration updated.', footnotation_localisation);
 		echo "</p></div>";
 	}
 	?>
-	<h2><?php _e('Footnotes Configuration', FDFOOTNOTE_TEXTDOMAIN); ?></h2>
-	<form action="" method="post" id="fdfootnote-conf">
+	<h2><?php _e('Footnotes Configuration', footnotation_localisation); ?></h2>
+	<form action="" method="post" id="footnotation-conf">
 	
 	<p>
-		<input id="fdfootnote_single" name="fdfootnote_single" type="checkbox" value="1"<?php if ($options['fdfootnote_single']==1) echo ' checked'; ?> />
-		<label for="fdfootnote_single"><?php _e('Only show footnotes on single post/page', FDFOOTNOTE_TEXTDOMAIN); ?></label>
+		<input id="footnotation_single" name="footnotation_single" type="checkbox" value="1"<?php if ($options['footnotation_single']==1) echo ' checked'; ?> />
+		<label for="footnotation_single"><?php _e('Only show footnotes on single post/page', footnotation_localisation); ?></label>
 	</p>
 
 	<p>
-		<input id="fdfootnote_collapse" name="fdfootnote_collapse" type="checkbox" value="1"<?php if ($options['fdfootnote_collapse']==1) echo ' checked'; ?> />
-		<label for="fdfootnote_collapse"><?php _e('Collapse footnotes until clicked', FDFOOTNOTE_TEXTDOMAIN); ?></label>
+		<input id="footnotation_collapse" name="footnotation_collapse" type="checkbox" value="1"<?php if ($options['footnotation_collapse']==1) echo ' checked'; ?> />
+		<label for="footnotation_collapse"><?php _e('Collapse footnotes until clicked', footnotation_localisation); ?></label>
 	</p>
 
-	<p class="submit" style="text-align: left"><?php wp_nonce_field('fdfootnote', 'fdfootnote-admin'); ?><input type="submit" name="submit" value="<?php _e('Save', FDFOOTNOTE_TEXTDOMAIN); ?> &raquo;" /></p>
+	<p class="submit" style="text-align: left"><?php wp_nonce_field('footnotation', 'footnotation-admin'); ?><input type="submit" name="submit" value="<?php _e('Save', footnotation_localisation); ?> &raquo;" /></p>
 	</form>
 	</div>
 	<?php
 }
 
 // Converts footnote markup into actual footnotes
-function fdfootnote_convert($content) {
-	$options = get_option('fdfootnote');
+function footnotation_convert($content) {
+	$options = get_option('footnotation');
 	$collapse = 0;
 	$single = 0;
 	$linksingle = false;
-	if (isset($options['fdfootnote_collapse'])) $collapse = $options['fdfootnote_collapse'];
-	if (isset($options['fdfootnote_single'])) $single = $options['fdfootnote_single'];
+	if (isset($options['footnotation_collapse'])) $collapse = $options['footnotation_collapse'];
+	if (isset($options['footnotation_single'])) $single = $options['footnotation_single'];
 	if (!is_page() && !is_single() && $single) $linksingle = true;
 	
 	$post_id = get_the_ID();
@@ -121,20 +128,20 @@ function fdfootnote_convert($content) {
 	$n = 1;
 	$notes = array();
 	if (preg_match_all('/\[(\d+\..*?)\]/s', $content, $matches)) {
-		foreach($matches[0] as $fn) {
-			$note = preg_replace('/\[\d+\.(.*?)\]/s', '\1', $fn);
+		foreach($matches[0] as $marker) {
+			$note = preg_replace('/\[\d+\.(.*?)\]/s', '\1', $marker);
 			$notes[$n] = $note;
 
 			$singleurl = '';
 			if ($linksingle) $singleurl = get_permalink();
 			
-			$content = str_replace($fn, "<sup class='footnote'><a href='$singleurl#fn-$post_id-$n' id='fnref-$post_id-$n' onclick='return fdfootnote_show($post_id)'>$n</a></sup>", $content);
+			$content = str_replace($marker, "<sup class='footnote'><a href='$singleurl#marker-$post_id-$n' id='markerref-$post_id-$n' onclick='return footnotation_show($post_id)'>$n</a></sup>", $content);
 			$n++;
 		}
 
 		// *****************************************************************************************************
 		// Workaround for wpautop() bug. Otherwise it sometimes inserts an opening <p> but not the closing </p>.
-		// There are a bunch of open wpautop tickets. See 4298 and 7988 in particular.
+		// From fd-footnotes
 		$content .= "\n\n";
 		// *****************************************************************************************************
 
@@ -143,8 +150,8 @@ function fdfootnote_convert($content) {
 			$content .= "<div class='footnotedivider'></div>";
 			
 			if ($collapse) {
-				$content .= "<a href='#' onclick='return fdfootnote_togglevisible($post_id)' class='footnotetoggle'>";
-				$content .= "<span class='footnoteshow'>".sprintf(_n('Show %d footnote', 'Show %d footnotes', $n-1, FDFOOTNOTE_TEXTDOMAIN), $n-1)."</span>";
+				$content .= "<a href='#' onclick='return footnotation_togglevisible($post_id)' class='footnotetoggle'>";
+				$content .= "<span class='footnoteshow'>".sprintf(_n('Show %d footnote', 'Show %d footnotes', $n-1, footnotation_localisation), $n-1)."</span>";
 				$content .= "</a>";
 				
 				$content .= "<ol style='display: none'>";
@@ -152,7 +159,7 @@ function fdfootnote_convert($content) {
 				$content .= "<ol>";
 			}
 			for($i=1; $i<$n; $i++) {
-				$content .= "<li id='fn-$post_id-$i'>$notes[$i] <span class='footnotereverse'><a href='#fnref-$post_id-$i'>&#8617;</a></span></li>";
+				$content .= "<li id='marker-$post_id-$i'>$notes[$i] <span class='returnkey'><a href='#markerref-$post_id-$i'>&#8629;</a></span></li>";
 			}
 			$content .= "</ol>";
 			$content .= "</div>";
@@ -162,5 +169,5 @@ function fdfootnote_convert($content) {
 	return($content);
 }
 
-add_action('the_content', 'fdfootnote_convert', 1);
+add_action('the_content', 'footnotation_convert', 1);
 ?>
