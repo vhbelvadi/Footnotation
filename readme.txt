@@ -17,9 +17,9 @@ an easy way to add footnotes to your posts.
 
 The syntax is retained from fd-footnotes which means it is natural, simple to 
 understand, and degrades gracefully even if the plugin is removed. Bidirectional 
-links are automatically made between footnotes and their position in the main 
+links are created automatically between a footnote and its position in the main 
 content where the footnote was referenced from so that readers can refer to 
-a footnote and return to their place in the text they were reading.
+a footnote and return to their place in the text they were reading, with ease.
 
 To make a footnote, type it inline within *arbitrarily numbered* square brackets:
 
