@@ -59,7 +59,9 @@ more footnotes with the same content all have different numbers.
 
 == Screenshots ==
 
-[View a live preview.](http://bit.ly/2imxSUO)
+1. Include footnotes with ease while writing. (The number after the square bracket can be arbitrary.)
+2. Footnote marker on the frontend. (You are offered two display styles to choose from.)
+3. Footnotes displayed elegantly below the article.
 
 == Changelog ==
 
@@ -70,3 +72,11 @@ more footnotes with the same content all have different numbers.
 = 1.0 =
 * New options and styling added
 * Initial fork off fd-footnotes
+
+== Upgrade Notice ==
+
+= 1.1 =
+Introducing new plugin options and assets.
+
+= 1.0 =
+First release. Thanks for downloading, and thanks to John Watson for the original fd-footnotes plugin.
