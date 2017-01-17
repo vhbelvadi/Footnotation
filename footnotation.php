@@ -7,7 +7,7 @@ Author: V.H. Belvadi
 Version: 1.1
 Author URI: http://vhbelvadi.com
 
-Copyright (C) 2008 V.H. Belvadi
+Copyright (C) 2017 V.H. Belvadi
 hello@vhbelvadi.com
 http://vhbelvadi.com/footnotation
 
