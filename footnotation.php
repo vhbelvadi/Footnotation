@@ -4,7 +4,7 @@ Plugin Name: Footnotation
 Plugin URI: http://vhbelvadi.com/footnotation
 Description: A simple footnote plugin for Wordpress
 Author: V.H. Belvadi
-Version: 1.0
+Version: 1.1
 Author URI: http://vhbelvadi.com
 
 Copyright (C) 2008 V.H. Belvadi
