@@ -64,8 +64,9 @@ more footnotes with the same content all have different numbers.
 == Changelog ==
 
 = 1.1 =
-* New options and styling added
-* View on github: https://github.com/vhbelvadi/Footnotation
+* Plugin icons added
+* Now on github ~ https://github.com/vhbelvadi/Footnotation
 
 = 1.0 =
+* New options and styling added
 * Initial fork off fd-footnotes
