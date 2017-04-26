@@ -27,10 +27,8 @@ please write to the Free Software Foundation, Inc.,
 */
 
 /*
-define('footnotation_localisation', 'footnotation');
-
 if (function_exists('load_plugin_textdomain')) {
-	load_plugin_textdomain(footnotation_localisation, false, dirname(plugin_basename(__FILE__)).'/lang' );
+	load_plugin_textdomain('footnotation', false, dirname(plugin_basename(__FILE__)).'/lang' );
 }
 */
 
@@ -44,19 +42,18 @@ function footnotation_enqueue_styles() {
 
 function footnotation_enqueue_scripts() {
 	if (is_admin()) return;
-	
+
 	wp_enqueue_script('jquery');
-	
+
 	wp_register_script('footnotation_script', get_bloginfo('wpurl').'/'.PLUGINDIR.'/'.dirname(plugin_basename(__FILE__)).'/footnotation.js', array('jquery'), '1.34');
 	wp_enqueue_script('footnotation_script');
 }
 
 function footnotation_config_page() {
-	global $wpdb;
 	if ( function_exists('add_submenu_page') )
 		add_submenu_page('options-general.php',
-			__('Footnotation', footnotation_localisation),
-			__('Footnotation', footnotation_localisation),
+			__('Footnotation', 'footnotation'),
+			__('Footnotation', 'footnotation'),
 			'manage_options', __FILE__, 'footnotation_conf');
 }
 
@@ -64,11 +61,11 @@ function footnotation_conf() {
 	$options = get_option('footnotation');
 
 	if (!isset($options['footnotation_collapse'])) $options['footnotation_collapse'] = 0;
-	
+
 	$updated = false;
 	if ( isset($_POST['submit']) ) {
 		check_admin_referer('footnotation', 'footnotation-admin');
-		
+
 		if (isset($_POST['footnotation_collapse'])) {
 			$options['footnotation_collapse'] = 1;
 		} else {
@@ -80,7 +77,7 @@ function footnotation_conf() {
 		} else {
 			$options['footnotation_single'] = 0;
 		}
-		
+
 		if (isset($_POST['footnotation_colour'])) {
 			$options['footnotation_colour'] = 1;
 		} else {
@@ -96,28 +93,28 @@ function footnotation_conf() {
 	<?php
 	if ($updated) {
 		echo "<div id='message' class='updated fade'><p>";
-		_e('Configuration updated.', footnotation_localisation);
+		_e('Configuration updated.', 'footnotation');
 		echo "</p></div>";
 	}
 	?>
-	<h2><?php _e('Footnotation options', footnotation_localisation); ?></h2>
+	<h2><?php _e('Footnotation options', 'footnotation'); ?></h2>
 	<form action="" method="post" id="footnotation-conf">
 	<br/>
 	<p>
 		<input id="footnotation_single" name="footnotation_single" type="checkbox" value="1"<?php if ($options['footnotation_single']==1) echo ' checked'; ?> />
-		<label for="footnotation_single"><?php _e('Show footnotes only on single posts or pages', footnotation_localisation); ?></label>
+		<label for="footnotation_single"><?php _e('Show footnotes only on single posts or pages', 'footnotation'); ?></label>
 	</p>
 
 	<p>
 		<input id="footnotation_collapse" name="footnotation_collapse" type="checkbox" value="1"<?php if ($options['footnotation_collapse']==1) echo ' checked'; ?> />
-		<label for="footnotation_collapse"><?php _e('Collapse footnotes until they are clicked on', footnotation_localisation); ?></label>
+		<label for="footnotation_collapse"><?php _e('Collapse footnotes until they are clicked on', 'footnotation'); ?></label>
 	</p>
 
 	<p>
 		<input id="footnotation_colour" name="footnotation_colour" type="checkbox" value="1"<?php if ($options['footnotation_colour']==1) echo ' checked'; ?> />
-		<label for="footnotation_colour"><?php _e('Match footnote marker colour to surrounding text*', footnotation_localisation); ?></label>
+		<label for="footnotation_colour"><?php _e('Match footnote marker colour to surrounding text*', 'footnotation'); ?></label>
 	</p>
-	
+
 	<p>
 	<small>
 	<br/>
@@ -127,7 +124,7 @@ function footnotation_conf() {
 	</small>
 	</p>
 
-	<p class="submit" style="text-align: left"><?php wp_nonce_field('footnotation', 'footnotation-admin'); ?><input type="submit" name="submit" value="<?php _e('Save', footnotation_localisation); ?> &raquo;" /></p>
+	<p class="submit" style="text-align: left"><?php wp_nonce_field('footnotation', 'footnotation-admin'); ?><input type="submit" name="submit" value="<?php _e('Save', 'footnotation'); ?> &raquo;" /></p>
 	</form>
 	</div>
 	<?php
@@ -144,7 +141,7 @@ function footnotation_convert($content) {
 	if (isset($options['footnotation_single'])) $single = $options['footnotation_single'];
 	if (isset($options['footnotation_colour'])) $single = $options['footnotation_colour'];
 	if (!is_page() && !is_single() && $single) $linksingle = true;
-	
+
 	$post_id = get_the_ID();
 
 	$n = 1;
@@ -156,16 +153,16 @@ function footnotation_convert($content) {
 
 			$singleurl = '';
 			if ($linksingle) $singleurl = get_permalink();
-			
+
 			if ($options['footnotation_colour']) {
-			
+
 			$content = str_replace($marker, "<sup class='footnote footnoteblack'><a href='$singleurl#marker-$post_id-$n' id='markerref-$post_id-$n' onclick='return footnotation_show($post_id)'>$n</a></sup>", $content);
 			$n++;
-			
+
 			}
 			else
 			{
-			
+
 			$content = str_replace($marker, "<sup class='footnote'><a href='$singleurl#marker-$post_id-$n' id='markerref-$post_id-$n' onclick='return footnotation_show($post_id)'>$n</a></sup>", $content);
 			$n++;
 			}
@@ -180,12 +177,12 @@ function footnotation_convert($content) {
 		if (!$linksingle) {
 			$content .= "<div class='footnotes' id='footnotes-$post_id'>";
 			$content .= "<div class='footnotedivider'></div>";
-			
+
 			if ($collapse) {
 				$content .= "<a href='#' onclick='return footnotation_togglevisible($post_id)' class='footnotetoggle'>";
-				$content .= "<span class='footnoteshow'>".sprintf(_n('Show %d footnote', 'Show %d footnotes', $n-1, footnotation_localisation), $n-1)."</span>";
+				$content .= "<span class='footnoteshow'>".sprintf(_n('Show %d footnote', 'Show %d footnotes', $n-1, 'footnotation'), $n-1)."</span>";
 				$content .= "</a>";
-				
+
 				$content .= "<ol style='display: none'>";
 			} else {
 				$content .= "<ol>";
