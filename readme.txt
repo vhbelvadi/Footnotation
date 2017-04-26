@@ -75,6 +75,9 @@ more footnotes with the same content all have different numbers.
 
 == Upgrade Notice ==
 
+= 1.2 =
+Dealt with frontend php notices and other minor improvements. With contributions by Mista-Flo
+
 = 1.1 =
 Introducing new plugin options and assets.
 
