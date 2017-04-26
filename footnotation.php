@@ -87,6 +87,16 @@ function footnotation_conf() {
 		update_option('footnotation', $options);
 
 		$updated = true;
+	} else {
+		if ( ! isset($options['footnotation_collapse'])) {
+			$options['footnotation_collapse'] = 0;
+		}
+		if ( ! isset($options['footnotation_single'])) {
+			$options['footnotation_single'] = 0;
+		}
+		if ( ! isset($options['footnotation_colour'])) {
+			$options['footnotation_colour'] = 0;
+		}
 	}
 	?>
 	<div class="wrap">
