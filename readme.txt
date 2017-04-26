@@ -1,5 +1,5 @@
 === Footnotation ===
-Contributors: vhbelvadi
+Contributors: vhbelvadi, Mista-Flo
 Donate link: http://vhbelvadi.com/footnotation/
 Tags: essay, academic, footnotes, endnotes, post, writing, editing
 Requires at least: 2.0
