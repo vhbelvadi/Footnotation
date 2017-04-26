@@ -65,6 +65,11 @@ more footnotes with the same content all have different numbers.
 
 == Changelog ==
 
+= 1.2 =
+* Front-end php notices corrected
+* Minor code improvements
+* With contributions by Mista-Flo
+
 = 1.1 =
 * Plugin icons added
 * Now on github ~ https://github.com/vhbelvadi/Footnotation
@@ -76,7 +81,7 @@ more footnotes with the same content all have different numbers.
 == Upgrade Notice ==
 
 = 1.2 =
-Dealt with frontend php notices and other minor improvements. With contributions by Mista-Flo
+Maintenance update.
 
 = 1.1 =
 Introducing new plugin options and assets.
