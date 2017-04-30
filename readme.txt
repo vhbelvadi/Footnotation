@@ -3,8 +3,8 @@ Contributors: vhbelvadi, Mista-Flo
 Donate link: http://vhbelvadi.com/footnotation/
 Tags: essay, academic, footnotes, endnotes, post, writing, editing
 Requires at least: 2.0
-Tested up to: 4.7.1
-Stable tag: 1.0
+Tested up to: 4.7.4
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
